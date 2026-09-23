@@ -105,6 +105,7 @@ int menuJogo()
 int jogarIA()
 {
 	char letra;
+	char chute[50];
 	int vidas = 6;
 	int venceu = 0;
 	
@@ -128,6 +129,7 @@ int jogarIA()
 		switch(opcao)
 		{
 			case 1:	
+			{
 				printf("Letra: ");
 				scanf(" %c", &letra);
 				
@@ -155,8 +157,30 @@ int jogarIA()
 				    system("pause");
 				}
 				limparTela();
-				break;				
-		}
+				break;
+			}
+				
+			case 2:
+	        {
+	            char chute[50];
+	            printf("Palavra: ");
+	            scanf(" %s", chute);
+	            
+	            if (strcmp(chute, palavra_secreta) == 0)
+	            {
+	                printf("\nVoce venceu!\n\n");
+	                venceu = 1;
+	            }
+	            else
+	            {
+	                printf("\nPalavra errada! Voce perdeu. A palavra era: %s\n\n", palavra_secreta);
+	                vidas = 0;
+	            }
+	            
+	            system("pause");
+	            limparTela();
+	        }
+	        break;
+	}	
 	} while ((vidas > 0) && (!venceu));
 }
-
