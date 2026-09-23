@@ -7,11 +7,21 @@ void limparTela();
 int menuPrincipal();
 int menuJogo();
 void forcaIA();
+int jogarIA();
 
 int main(void)
 {
 	int opcao;
-	opcao = menuPrincipal();
+	do
+	{
+		opcao = menuPrincipal();
+		switch(opcao)	
+		{
+			case 1:
+				limparTela();
+				jogarIA();
+		}
+	} while(opcao != 3);
 }
 	
 void limparTela()
@@ -49,3 +59,17 @@ void forcaIA()
 	
     strcpy(palavra_secreta, palavras[indice]);
 }
+
+int jogarIA()
+{	
+	forcaIA();
+	int tamanho = strlen(palavra_secreta);
+
+    char exibir[50];
+    for(int i = 0; i < tamanho; i++)
+    {
+        exibir[i] = '_';
+    }
+	exibir[tamanho] = '\0';
+}
+	
