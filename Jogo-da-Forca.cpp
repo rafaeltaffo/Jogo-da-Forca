@@ -4,6 +4,7 @@
 #include<stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 char palavra_secreta[50];
 void limparTela();
@@ -25,8 +26,15 @@ int jogarIA();
 				case 1:
 					limparTela();
 					jogarIA();
+					break;
+				case 2:
+					limparTela();
+					break;
+				case 3:
+					return 0;	
 			}
-		} while(opcao != 3);
+				
+		} while(1);
 	}
 
 void limparTela()
@@ -105,7 +113,6 @@ int menuJogo()
 int jogarIA()
 {
 	char letra;
-	char chute[50];
 	int vidas = 6;
 	int venceu = 0;
 	
@@ -130,34 +137,45 @@ int jogarIA()
 		{
 			case 1:	
 			{
-				printf("Letra: ");
-				scanf(" %c", &letra);
-				
-				int acertou = 0;
-				for (int k = 0; k < tamanho; k++)
-				{
-					if(palavra_secreta[k] == letra)
-					{
-						exibir[k] = letra;
-						acertou = 1;
-					}
-				}
-				
-				if(!acertou)
-				{
-					vidas--;
-					printf("\nLetra errada! Perdeu uma vida.\n\n");
-					system("pause");
-				}
-				
-				if (strcmp(exibir, palavra_secreta) == 0)
-				{
-				    printf("\nVoce venceu! A palavra era: %s\n\n", palavra_secreta);
-				    venceu = 1;
-				    system("pause");
-				}
-				limparTela();
-				break;
+			    printf("Letra: ");
+			    scanf(" %c", &letra);
+			    
+			    int acertou = 0;
+			    
+			    if (!isalpha(letra))
+			    {
+			        printf("\nEntrada invalida! Digite uma letra, nao um numero.\n\n");
+			        system("pause");
+			        limparTela();
+			        break;
+			    }
+			    
+			    letra = tolower(letra);
+			    
+			    for (int k = 0; k < tamanho; k++)
+			    {
+			        if(tolower(palavra_secreta[k]) == letra)
+			        {
+			            exibir[k] = palavra_secreta[k];
+			            acertou = 1;
+			        }
+			    }
+			    
+			    if(!acertou)
+			    {
+			        vidas--;
+			        printf("\nLetra errada! Perdeu uma vida.\n\n");
+			        system("pause");
+			    }
+			    
+			    if (strcmp(exibir, palavra_secreta) == 0)
+			    {
+			        printf("\nVoce venceu! A palavra era: %s\n\n", palavra_secreta);
+			        venceu = 1;
+			        system("pause");
+			    }
+			    limparTela();
+			    break;
 			}
 				
 			case 2:
@@ -166,9 +184,9 @@ int jogarIA()
 	            printf("Palavra: ");
 	            scanf(" %s", chute);
 	            
-	            if (strcmp(chute, palavra_secreta) == 0)
+	            if (_stricmp(chute, palavra_secreta) == 0)
 	            {
-	                printf("\nVoce venceu!\n\n");
+	                printf("\nVoce venceu! A palavra era: %s\n\n", palavra_secreta);
 	                venceu = 1;
 	            }
 	            else
@@ -181,6 +199,8 @@ int jogarIA()
 	            limparTela();
 	        }
 	        break;
-	}	
+		}	
 	} while ((vidas > 0) && (!venceu));
+	
+	return 0;
 }
