@@ -44,8 +44,8 @@ void limparTela()
 
 void forcaIA()
 {
-	char *palavras[] = { "Bola", "Girassol", "Laranja", "Computador", "Paralelepipedo", "Guitarra" };
-    int total = 6;
+	char *palavras[] = { "Bola", "Girassol", "Laranja", "Computador", "Paralelepipedo", "Guitarra", "Caderno", "Otorrinolaringologista", "Esmeralda", "Aventura", "Montanha", "Basquete", "Futebol", "Galaxia", "Planeta", "Moeda", "Dinheiro", "Independencia", "Chiclete", "Contexto" };
+    int total = 20;
     
     srand(time(NULL)); 
     int indice = rand() % total;
@@ -57,7 +57,7 @@ int menuPrincipal()
 {
 	int opcao;
 	
-	printf("========================= Jogo da Forca =========================\n\n");
+	printf("==================================================== Jogo da Forca =====================================================\n\n");
     printf("1 - Iniciar Novo Jogo (IA)\n");
     printf("2 - Iniciar Novo Jogo (2 Jogadores)\n");
     printf("3 - Sair\n\n");
@@ -113,8 +113,12 @@ int menuJogo()
 int jogarIA()
 {
 	char letra;
+	char letras_testadas[26];
 	int vidas = 6;
 	int venceu = 0;
+	int total_testadas = 0;
+	
+	
 	
 	forcaIA();
 	int tamanho = strlen(palavra_secreta); // Conta o tamanho da string
@@ -128,11 +132,23 @@ int jogarIA()
 	
 	do
 	{
-		printf("========================= Jogo da Forca =========================\n\n");
-		printf("Palavra: %s\t\t\t\t\tVidas: %d\n", exibir, vidas);
+		printf("==================================================== Jogo da Forca =====================================================\n\n");
+		printf("Palavra: %s\t\t\t\t\t\t\t\t\t\t\t\tVidas: %d\n", exibir, vidas);
 	
+	
+		printf("Letras erradas: ");
+		for (int j = 0; j < total_testadas; j++)
+		{
+		    printf("%c", letras_testadas[j]);
+		    if (j < total_testadas - 1)
+		    {
+		        printf(", ");
+		    }
+		}
+		printf("\n");
+		
 		int opcao = menuJogo();
-	
+				
 		switch(opcao)
 		{
 			case 1:	
@@ -152,6 +168,23 @@ int jogarIA()
 			    
 			    letra = tolower(letra);
 			    
+			    int ja_testou = 0;
+			    for (int j = 0; j < total_testadas; j++)
+			    {
+			    	if (letras_testadas[j] == letra)
+			    	{
+			    		ja_testou = 1;
+					}
+				}
+				
+				if(ja_testou)
+				{
+					printf("\nVoce ja tentou essa letra! Escolha outra.\n\n");
+					system("pause");
+					limparTela();
+					break;
+				}
+				
 			    for (int k = 0; k < tamanho; k++)
 			    {
 			        if(tolower(palavra_secreta[k]) == letra)
@@ -166,13 +199,14 @@ int jogarIA()
 			        vidas--;
 			        printf("\nLetra errada! Perdeu uma vida.\n\n");
 			        system("pause");
+			        
+			        letras_testadas[total_testadas] = letra;
+    				total_testadas++;
 			    }
 			    
 			    if (strcmp(exibir, palavra_secreta) == 0)
-			    {
-			        printf("\nVoce venceu! A palavra era: %s\n\n", palavra_secreta);
+			    {		        
 			        venceu = 1;
-			        system("pause");
 			    }
 			    limparTela();
 			    break;
@@ -186,21 +220,31 @@ int jogarIA()
 	            
 	            if (_stricmp(chute, palavra_secreta) == 0)
 	            {
-	                printf("\nVoce venceu! A palavra era: %s\n\n", palavra_secreta);
 	                venceu = 1;
 	            }
 	            else
 	            {
-	                printf("\nPalavra errada! Voce perdeu. A palavra era: %s\n\n", palavra_secreta);
 	                vidas = 0;
 	            }
-	            
-	            system("pause");
 	            limparTela();
+		        break;
 	        }
-	        break;
 		}	
 	} while ((vidas > 0) && (!venceu));
+	
+	printf("==================================================== Jogo da Forca =====================================================\n\n");
+	
+	if (venceu)
+	{
+	    printf("Parabens, voce venceu!\t\t\t\t\t\t\t\t\t\t\t\tVidas: %d\n\n", vidas);
+	}
+	else
+	{
+	    printf("Voce perdeu! Suas vidas acabaram.\t\t\t\t\t\t\t\t\t\tVidas: %d\nA palavra era: %s\n\n", vidas, palavra_secreta);
+	}
+
+	system("pause");
+	limparTela();
 	
 	return 0;
 }
